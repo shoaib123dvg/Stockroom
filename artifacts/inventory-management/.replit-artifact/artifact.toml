@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Inventory Management"
+description = "A practical inventory workspace for tracking products, stock levels, movement, and low-stock alerts with a clear operational dashboard."
+version = "1.0.0"
+id = "artifacts/inventory-management"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25781
+
+[services.development]
+run = "pnpm --filter @workspace/inventory-management run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/inventory-management", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/inventory-management/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25781"
+BASE_PATH = "/"
